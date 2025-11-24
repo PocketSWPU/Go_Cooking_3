@@ -139,6 +139,25 @@ class DishDetail(BaseModel):
         from_attributes = True
 
 
+class DishHistoryBase(SQLModel):
+    dish_id: int
+    cooking_rating: int  # 1很棒 2还行 3一般 4拉胯
+
+
+class DishHistoryCreate(DishHistoryBase):
+    pass
+
+
+class DishHistory(DishHistoryBase):
+    id: Optional[int] = None
+    cooking_time: datetime
+    create_time: datetime
+    modify_time: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class APIResponse(BaseModel):
     code: int
     data: Optional[object] = None

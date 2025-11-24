@@ -8,7 +8,7 @@ import os
 # Add the parent directory to sys.path to allow imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.models import Dish, Ingredient, DishStep, DishIngredientLink
+from backend.models import Dish, Ingredient, DishStep, DishIngredientLink, DishHistory
 from backend import schemas
 
 
@@ -220,3 +220,34 @@ def add_dish_with_ingredients_and_steps(db: Session, dish_data: schemas.DishAddR
     db.refresh(db_dish)
 
     return db_dish
+
+
+def create_dish_history(db: Session, dish_history: schemas.DishHistoryCreate):
+    from datetime import datetime
+    db_dish_history = DishHistory(
+        dish_id=dish_history.dish_id,
+        cooking_time=datetime.now(),
+        cooking_rating=dish_history.cooking_rating
+    )
+    db.add(db_dish_history)
+    db.commit()
+    db.refresh(db_dish_history)
+    return db_dish_history
+
+
+def get_dish_history_by_dish_id(db: Session, dish_id: int):
+    from sqlalchemy.orm import selectinload
+    from sqlmodel import select
+    statement = select(DishHistory).where(DishHistory.dish_id == dish_id).order_by(
+        DishHistory.cooking_time.desc(),
+        DishHistory.create_time.desc()
+    )
+    result = db.execute(statement)
+    return result.scalars().all()
+
+
+def get_cooking_count_by_dish_id(db: Session, dish_id: int):
+    from sqlmodel import select, func
+    statement = select(func.count(DishHistory.id)).where(DishHistory.dish_id == dish_id)
+    result = db.execute(statement)
+    return result.scalar_one()

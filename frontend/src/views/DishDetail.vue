@@ -29,6 +29,9 @@
                 {{ getDifficultyText(dish.difficult) }}
               </el-tag>
             </el-descriptions-item>
+            <el-descriptions-item label="烹饪次数">
+              <span>{{ cookingCount }}</span>
+            </el-descriptions-item>
             <el-descriptions-item label="创建时间">{{ formatDate(dish.create_time) }}</el-descriptions-item>
             <el-descriptions-item label="最后修改">{{ formatDate(dish.modify_time) }}</el-descriptions-item>
           </el-descriptions>
@@ -82,6 +85,46 @@
                 </div>
               </div>
             </el-tab-pane>
+
+            <el-tab-pane label="历史记录" name="history">
+              <div class="history-content">
+                <!-- Rating buttons -->
+                <div class="rating-buttons">
+                  <el-button type="success" @click="showRatingDialog(1)" size="large">
+                    很棒
+                  </el-button>
+                  <el-button type="primary" @click="showRatingDialog(2)" size="large">
+                    还行
+                  </el-button>
+                  <el-button type="info" @click="showRatingDialog(3)" size="large">
+                    一般
+                  </el-button>
+                  <el-button type="danger" @click="showRatingDialog(4)" size="large">
+                    拉胯
+                  </el-button>
+                </div>
+
+                <!-- Timeline for history -->
+                <el-timeline v-if="dishHistory.length > 0" class="history-timeline">
+                  <el-timeline-item
+                    v-for="(history, index) in dishHistory"
+                    :key="history.id"
+                    :timestamp="formatDate(history.cooking_time)"
+                    placement="top"
+                  >
+                    <div class="history-item">
+                      <el-tag :type="getRatingType(history.cooking_rating)" size="small">
+                        {{ getRatingText(history.cooking_rating) }}
+                      </el-tag>
+                    </div>
+                  </el-timeline-item>
+                </el-timeline>
+
+                <div v-else class="no-data">
+                  <el-empty description="暂无烹饪历史" :image-size="100" />
+                </div>
+              </div>
+            </el-tab-pane>
           </el-tabs>
         </div>
       </el-card>
@@ -102,7 +145,9 @@ export default {
   data() {
     return {
       dish: null,
-      activeTab: 'ingredients'  // 默认打开所需食材tab
+      activeTab: 'ingredients',  // 默认打开所需食材tab
+      dishHistory: [],
+      cookingCount: 0
     }
   },
   computed: {
@@ -125,6 +170,8 @@ export default {
   },
   mounted() {
     this.fetchDishDetail()
+    this.fetchCookingCount()
+    this.fetchDishHistory()
   },
   methods: {
     async fetchDishDetail() {
@@ -179,6 +226,86 @@ export default {
         case 3: return 'info'  // 调料
         default: return 'info'
       }
+    },
+    async fetchCookingCount() {
+      try {
+        const response = await api.get(`/dish/${this.id}/cooking-count`)
+        if (response.data.code === 0) {
+          this.cookingCount = response.data.data
+        } else {
+          this.$message.error('获取烹饪次数失败')
+        }
+      } catch (error) {
+        console.error('Error fetching cooking count:', error)
+        this.$message.error('获取烹饪次数失败')
+      }
+    },
+    async fetchDishHistory() {
+      try {
+        const response = await api.get(`/dish/${this.id}/history`)
+        if (response.data.code === 0) {
+          this.dishHistory = response.data.data
+        } else {
+          this.$message.error('获取烹饪历史失败')
+        }
+      } catch (error) {
+        console.error('Error fetching dish history:', error)
+        this.$message.error('获取烹饪历史失败')
+      }
+    },
+    getRatingText(rating) {
+      switch(rating) {
+        case 1: return '很棒'
+        case 2: return '还行'
+        case 3: return '一般'
+        case 4: return '拉胯'
+        default: return '未知'
+      }
+    },
+    getRatingType(rating) {
+      switch(rating) {
+        case 1: return 'success' // Green for 很棒
+        case 2: return 'primary' // Blue for 还行
+        case 3: return 'info'    // Gray for 一般
+        case 4: return 'danger'  // Red for 拉胯
+        default: return 'info'
+      }
+    },
+    getRatingColor(rating) {
+      // Return default color for timeline, since we're not using it anymore
+      return '#909399'
+    },
+    showRatingDialog(rating) {
+      this.$confirm(
+        `确定记录本次烹饪评价为"${this.getRatingText(rating)}"吗？`,
+        '确认记录',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).then(async () => {
+        try {
+          const response = await api.post('/dish/history/create', {
+            dish_id: parseInt(this.id),
+            cooking_rating: rating
+          })
+
+          if (response.data.code === 0) {
+            this.$message.success('烹饪历史记录成功')
+            // Refresh the counts and history
+            this.fetchCookingCount()
+            this.fetchDishHistory()
+          } else {
+            this.$message.error(response.data.message || '记录失败')
+          }
+        } catch (error) {
+          console.error('Error creating dish history:', error)
+          this.$message.error('记录失败：' + (error.response?.data?.message || error.message))
+        }
+      }).catch(() => {
+        // User cancelled
+      })
     },
     goBack() {
       this.$router.go(-1)
@@ -315,6 +442,32 @@ export default {
   background-color: #f4f4f5;
   padding: 2px 6px;
   border-radius: 3px;
+}
+
+.history-content {
+  padding: 15px 0;
+}
+
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: flex-start;
+}
+
+.rating-buttons .el-button {
+  min-width: 80px;
+}
+
+.history-timeline {
+  padding-left: 0;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 @media (max-width: 768px) {

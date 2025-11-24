@@ -6,7 +6,7 @@ import os
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.models import Dish, Ingredient, DishIngredientLink
+from backend.models import Dish, Ingredient, DishIngredientLink, DishHistory
 
 # Load environment variables from .env file in the backend directory
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
