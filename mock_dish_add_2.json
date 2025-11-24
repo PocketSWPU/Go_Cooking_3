@@ -1,0 +1,112 @@
+{
+  "dish_name": "麻婆豆腐",
+  "difficult": 2,
+  "ingredients": [
+    {
+      "ingredient_name": "嫩豆腐",
+      "type": 1,
+      "usage": "400克"
+    },
+    {
+      "ingredient_name": "牛肉末",
+      "type": 1,
+      "usage": "100克"
+    },
+    {
+      "ingredient_name": "郫县豆瓣酱",
+      "type": 3,
+      "usage": "2勺"
+    },
+    {
+      "ingredient_name": "豆豉",
+      "type": 3,
+      "usage": "1勺"
+    },
+    {
+      "ingredient_name": "蒜",
+      "type": 2,
+      "usage": "3瓣"
+    },
+    {
+      "ingredient_name": "姜",
+      "type": 2,
+      "usage": "1小块"
+    },
+    {
+      "ingredient_name": "青蒜",
+      "type": 2,
+      "usage": "2根"
+    },
+    {
+      "ingredient_name": "花椒",
+      "type": 3,
+      "usage": "1小勺"
+    },
+    {
+      "ingredient_name": "辣椒粉",
+      "type": 3,
+      "usage": "1小勺"
+    },
+    {
+      "ingredient_name": "生抽",
+      "type": 3,
+      "usage": "1勺"
+    },
+    {
+      "ingredient_name": "老抽",
+      "type": 3,
+      "usage": "半勺"
+    },
+    {
+      "ingredient_name": "料酒",
+      "type": 3,
+      "usage": "1勺"
+    },
+    {
+      "ingredient_name": "白糖",
+      "type": 3,
+      "usage": "半勺"
+    },
+    {
+      "ingredient_name": "水淀粉",
+      "type": 3,
+      "usage": "适量"
+    },
+    {
+      "ingredient_name": "食用油",
+      "type": 3,
+      "usage": "适量"
+    },
+    {
+      "ingredient_name": "盐",
+      "type": 3,
+      "usage": "适量"
+    }
+  ],
+  "steps": [
+    {
+      "step_order": 1,
+      "step_text": "豆腐切块，用盐水焯一下捞出备用"
+    },
+    {
+      "step_order": 2,
+      "step_text": "热锅下油，爆香姜蒜末，下牛肉末炒散"
+    },
+    {
+      "step_order": 3,
+      "step_text": "加入郫县豆瓣酱和豆豉炒出红油"
+    },
+    {
+      "step_order": 4,
+      "step_text": "加适量水煮开，加入豆腐块，小火煮5分钟"
+    },
+    {
+      "step_order": 5,
+      "step_text": "加入调料（生抽、老抽、料酒、糖等）调味"
+    },
+    {
+      "step_order": 6,
+      "step_text": "用水淀粉勾薄芡，撒上花椒粉和青蒜末即可"
+    }
+  ]
+}

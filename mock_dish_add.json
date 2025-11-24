@@ -1,0 +1,101 @@
+{
+  "dish_name": "宫保鸡丁",
+  "difficult": 2,
+  "ingredients": [
+    {
+      "ingredient_name": "鸡胸肉",
+      "type": 1,
+      "usage": "300克"
+    },
+    {
+      "ingredient_name": "花生米",
+      "type": 1,
+      "usage": "100克"
+    },
+    {
+      "ingredient_name": "干辣椒",
+      "type": 3,
+      "usage": "10个"
+    },
+    {
+      "ingredient_name": "大葱",
+      "type": 2,
+      "usage": "1段"
+    },
+    {
+      "ingredient_name": "生姜",
+      "type": 2,
+      "usage": "1小块"
+    },
+    {
+      "ingredient_name": "大蒜",
+      "type": 2,
+      "usage": "3瓣"
+    },
+    {
+      "ingredient_name": "生抽",
+      "type": 3,
+      "usage": "2勺"
+    },
+    {
+      "ingredient_name": "老抽",
+      "type": 3,
+      "usage": "1勺"
+    },
+    {
+      "ingredient_name": "料酒",
+      "type": 3,
+      "usage": "1勺"
+    },
+    {
+      "ingredient_name": "白糖",
+      "type": 3,
+      "usage": "1勺"
+    },
+    {
+      "ingredient_name": "醋",
+      "type": 3,
+      "usage": "半勺"
+    },
+    {
+      "ingredient_name": "淀粉",
+      "type": 3,
+      "usage": "适量"
+    },
+    {
+      "ingredient_name": "盐",
+      "type": 3,
+      "usage": "适量"
+    }
+  ],
+  "steps": [
+    {
+      "step_order": 1,
+      "step_text": "鸡胸肉切丁，用料酒、生抽、淀粉腌制15分钟"
+    },
+    {
+      "step_order": 2,
+      "step_text": "花生米用油炸至酥脆，捞出备用"
+    },
+    {
+      "step_order": 3,
+      "step_text": "干辣椒剪段，大葱切丁，姜蒜切末"
+    },
+    {
+      "step_order": 4,
+      "step_text": "热锅下油，下鸡丁炒至变色盛起"
+    },
+    {
+      "step_order": 5,
+      "step_text": "爆香干辣椒、葱姜蒜，下鸡丁翻炒"
+    },
+    {
+      "step_order": 6,
+      "step_text": "加入调味汁（生抽、老抽、白糖、醋），翻炒均匀"
+    },
+    {
+      "step_order": 7,
+      "step_text": "倒入花生米，快速翻炒收汁即可"
+    }
+  ]
+}

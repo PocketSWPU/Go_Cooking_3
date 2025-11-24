@@ -1,0 +1,29 @@
+{
+  "name": "gocooking-3-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for GoCooking 3 - A cooking assistant application",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "vue",
+    "element-plus",
+    "cooking",
+    "recipe"
+  ],
+  "author": "GoCooking Team",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^3.3.0",
+    "element-plus": "^2.4.0",
+    "axios": "^1.6.0",
+    "vue-router": "^4.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^4.5.0"
+  }
+}
