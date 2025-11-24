@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
 from sqlalchemy import Column, DateTime, String, Text, SmallInteger, text
 
 
@@ -43,6 +43,7 @@ class Dish(SQLModel, table=True):
         link_model=DishIngredientLink
     )
     dish_ingredients: List[DishIngredientLink] = Relationship(back_populates="dish")
+    histories: List["DishHistory"] = Relationship(back_populates="dish")
 
 
 class Ingredient(SQLModel, table=True):
@@ -83,4 +84,21 @@ class DishStep(SQLModel, table=True):
     # Relationship
     dish: Optional[Dish] = Relationship(back_populates="steps")
 
+
+class DishHistory(SQLModel, table=True):
+    __tablename__ = "dish_history"
+
+    id: Optional[int] = Field(default=None, primary_key=True, index=True)
+    dish_id: int = Field(foreign_key="dish.id")
+    cooking_time: date = Field(sa_column=Column("cooking_time", DateTime, server_default=text("CURRENT_TIMESTAMP")))
+    cooking_rating: int = Field(sa_column=Column("cooking_rating", SmallInteger, server_default="3"))  # 1很棒 2还行 3一般 4拉胯
+    create_time: Optional[datetime] = Field(
+        sa_column=Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
+    )
+    modify_time: Optional[datetime] = Field(
+        sa_column=Column(DateTime, server_default=text("CURRENT_TIMESTAMP"), onupdate=text("CURRENT_TIMESTAMP"))
+    )
+
+    # Relationship
+    dish: Optional[Dish] = Relationship(back_populates="histories")
 

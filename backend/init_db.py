@@ -4,6 +4,7 @@
 import os
 import argparse
 
+
 def set_environment(env=None):
     """Set the environment based on parameter, command line arguments, or default to dev"""
     if env is not None:
@@ -28,7 +29,9 @@ def set_environment(env=None):
         if 'ENV' not in os.environ:
             os.environ['ENV'] = 'dev'
 
+
 from backend.database import create_db_and_tables
+
 
 def init_db(env=None):
     """
@@ -39,6 +42,7 @@ def init_db(env=None):
     # Create all tables based on entity relationships
     create_db_and_tables()
     print(f"Database tables created successfully in {env or os.getenv('ENV', 'dev')} environment!")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Initialize GoCooking 3 Database')

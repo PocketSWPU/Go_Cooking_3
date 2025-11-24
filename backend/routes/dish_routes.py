@@ -129,3 +129,40 @@ def add_dish_with_ingredients_and_steps(request: schemas.DishAddRequest, db: Ses
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error adding dish: {str(e)}")
+
+
+@router.post("/history/create", response_model=schemas.APIResponse)
+def create_dish_history(history: schemas.DishHistoryCreate, db: Session = Depends(get_db)):
+    """
+    Create a new dish history record
+    """
+    try:
+        db_history = crud.create_dish_history(db, history)
+        return schemas.APIResponse(code=0, data=db_history)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error creating dish history: {str(e)}")
+
+
+@router.get("/{id}/history", response_model=schemas.APIResponse)
+def get_dish_history(id: int, db: Session = Depends(get_db)):
+    """
+    Get dish cooking history by dish ID
+    """
+    try:
+        history_list = crud.get_dish_history_by_dish_id(db, id)
+        return schemas.APIResponse(code=0, data=history_list)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting dish history: {str(e)}")
+
+
+@router.get("/{id}/cooking-count", response_model=schemas.APIResponse)
+def get_cooking_count(id: int, db: Session = Depends(get_db)):
+    """
+    Get cooking count by dish ID
+    """
+    try:
+        count = crud.get_cooking_count_by_dish_id(db, id)
+        return schemas.APIResponse(code=0, data=count)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting cooking count: {str(e)}")
