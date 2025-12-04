@@ -3,9 +3,6 @@ import argparse
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.routes.dish_routes import router as dish_router
-from backend.routes.ingredient_routes import router as ingredient_router
-
 def set_environment():
     """Set the environment before importing database to ensure proper configuration"""
     # Only parse arguments if running as main script
@@ -21,12 +18,20 @@ def set_environment():
         # Set environment variable for database connection
         os.environ['ENV'] = args.env
         print(f"Selected environment: {args.env}")
+
+        # Initialize database with the selected environment
+        from backend.database import init_db_engine
+        init_db_engine(args.env)
     else:
         # For imports, use the existing environment or default to dev
         if 'ENV' not in os.environ:
             os.environ['ENV'] = 'dev'
 
 set_environment()
+
+# Import routes after environment is set
+from backend.routes.dish_routes import router as dish_router
+from backend.routes.ingredient_routes import router as ingredient_router
 
 app = FastAPI(title="GoCooking 3 API", version="1.0.0")
 
@@ -64,5 +69,9 @@ if __name__ == "__main__":
     # Update environment if needed
     os.environ['ENV'] = args.env
     print(f"Starting server in {args.env} environment")
+
+    # Initialize database with the selected environment
+    from backend.database import init_db_engine
+    init_db_engine(args.env)
 
     uvicorn.run(app, host=args.host, port=args.port)

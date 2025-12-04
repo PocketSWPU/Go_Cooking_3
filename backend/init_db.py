@@ -11,6 +11,10 @@ def set_environment(env=None):
         # Use the environment passed as parameter
         os.environ['ENV'] = env
         print(f"Selected environment: {env}")
+
+        # Initialize database with the selected environment
+        from backend.database import init_db_engine
+        init_db_engine(env)
     elif __name__ == "__main__":
         # Only parse arguments if running as main script
         parser = argparse.ArgumentParser(description='Initialize GoCooking 3 Database')
@@ -24,12 +28,17 @@ def set_environment(env=None):
         # Set environment variable for database connection
         os.environ['ENV'] = args.env
         print(f"Selected environment: {args.env}")
+
+        # Initialize database with the selected environment
+        from backend.database import init_db_engine
+        init_db_engine(args.env)
     else:
         # For imports, use the existing environment or default to dev
         if 'ENV' not in os.environ:
             os.environ['ENV'] = 'dev'
 
 
+# Import after environment setting is complete
 from backend.database import create_db_and_tables
 
 
@@ -39,6 +48,8 @@ def init_db(env=None):
     :param env: Environment to use ('dev', 'prod', etc.). If None, uses default or ENV variable
     """
     set_environment(env)
+    # Import here to ensure database is initialized after environment is set
+    from backend.database import create_db_and_tables
     # Create all tables based on entity relationships
     create_db_and_tables()
     print(f"Database tables created successfully in {env or os.getenv('ENV', 'dev')} environment!")
